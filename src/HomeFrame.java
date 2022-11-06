@@ -1,29 +1,31 @@
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.Image;
-import java.awt.BorderLayout;
+import java.awt.*;
+import javax.swing.*;
 
-import javax.swing.BorderFactory;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.border.Border;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
-public class MyFrame extends JFrame {
+public class HomeFrame extends JFrame implements ActionListener {
 
-    MyFrame() {
-        ImageIcon semaImage = new ImageIcon("assets/sema.jpeg");
-        Image image = semaImage.getImage().getScaledInstance(200, 200, java.awt.Image.SCALE_SMOOTH);
-        semaImage = new ImageIcon(image);
+    JButton accessButton = new JButton();
+    JButton messageButton = new JButton();
 
-        ImageIcon ouzImage = new ImageIcon("assets/ouz.png");
-        image = ouzImage.getImage().getScaledInstance(200, 200, java.awt.Image.SCALE_SMOOTH);
-        ouzImage = new ImageIcon(image);
+    HomeFrame() {
 
-        // panels
+        /*
+         * ImageIcon semaImage = new ImageIcon("assets/sema.jpeg");
+         * Image image = semaImage.getImage().getScaledInstance(200, 200,
+         * java.awt.Image.SCALE_SMOOTH);
+         * semaImage = new ImageIcon(image);
+         * 
+         * ImageIcon ouzImage = new ImageIcon("assets/ouz.png");
+         * image = ouzImage.getImage().getScaledInstance(200, 200,
+         * java.awt.Image.SCALE_SMOOTH);
+         * ouzImage = new ImageIcon(image);
+         */
+
+        // --------------- panels --------------------
         // welcome panel
+
         JPanel welcomePanel = new JPanel();
         welcomePanel.setBackground(new Color(0x310000)); // semanın fax hex
 
@@ -33,10 +35,6 @@ public class MyFrame extends JFrame {
         welcomeLabel.setForeground(Color.LIGHT_GRAY);
 
         welcomePanel.add(welcomeLabel);
-
-        // welcomeLabel.setVerticalAlignment(JLabel.TOP);
-        // welcomeLabel.setHorizontalAlignment(JLabel.CENTER);
-        // welcomeLabel.setHorizontalTextPosition(JLabel.CENTER); // centers the text of
 
         // image panels
         /*
@@ -63,18 +61,28 @@ public class MyFrame extends JFrame {
          * imagePanel.add(semaLabel);
          * imagePanel.add(ouzLabel);
          */
+
         // button panel and buttons
         JPanel buttonsPanel = new JPanel();
+        buttonsPanel.setLayout(new BoxLayout(buttonsPanel, BoxLayout.PAGE_AXIS));
         buttonsPanel.setBackground(new Color(0x310000)); // semanın fax hex
 
-        JButton button = new JButton();
-        button.addActionListener(e -> System.out.println("Access"));
-        button.setText("Access");
-        // button.setBorder(BorderFactory.createLineBorder(Color.black));
-        button.setBounds(100, 100, 100, 100);
-        button.setFocusable(false);
+        accessButton.setText("Access");
+        accessButton.setFont(new Font("Arial Black", Font.PLAIN, 15));
+        accessButton.setFocusable(false);
+        accessButton.setAlignmentX(CENTER_ALIGNMENT);
+        accessButton.addActionListener(this);
 
-        buttonsPanel.add(button);
+        messageButton.setText("Leave Message");
+        messageButton.setFont(new Font("Arial Black", Font.PLAIN, 15));
+        messageButton.setFocusable(false);
+        messageButton.setAlignmentX(CENTER_ALIGNMENT);
+        messageButton.addActionListener(this);
+
+        buttonsPanel.add(Box.createVerticalStrut(20)); // buffer space
+        buttonsPanel.add(accessButton);
+        buttonsPanel.add(Box.createVerticalStrut(20));
+        buttonsPanel.add(messageButton);
 
         // credit panel
         JPanel creditsPanel = new JPanel();
@@ -89,28 +97,39 @@ public class MyFrame extends JFrame {
 
         creditsPanel.add(creditsLabel);
 
-        // frame init
-        this.setTitle("Message Box");
+        // ------------------------ frame init --------------------
+        this.setTitle("Main Page");
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // exit when pressed X
         // this.setResizable(false);
-        this.setSize(600, 500);
-        this.setVisible(true);
+        this.setSize(350, 250);
 
         this.setLayout(new BorderLayout());
 
         this.add(welcomePanel, BorderLayout.NORTH);
-        // this.add(semaLabel, BorderLayout.WEST);
-        // this.add(ouzLabel, BorderLayout.EAST);
         this.add(buttonsPanel, BorderLayout.CENTER);
         this.add(creditsLabel, BorderLayout.SOUTH);
-        this.pack();
-        // frame icon
+        // this.add(semaLabel, BorderLayout.WEST);
+        // this.add(ouzLabel, BorderLayout.EAST);
 
+        // this.pack();
+        // ----------frame icon
         // this.setIconImage(semaImage.getImage());
 
-        // frame graphics
+        // -------------------------frame graphics
         this.getContentPane().setBackground(new Color(0x310000)); // semanın fax hexcode
+        this.setVisible(true);
+        this.setLocationRelativeTo(null); // set frame initialization location to centre of the screen
 
     }
 
+    @Override
+    public void actionPerformed(ActionEvent e) {
+
+        if (e.getSource() == accessButton) {
+            System.out.println("Access");
+            this.dispose();
+            new AccessFrame();
+        }
+
+    }
 }
