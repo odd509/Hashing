@@ -129,6 +129,11 @@ public class HomeFrame extends JFrame implements ActionListener {
             System.out.println("Access");
             this.dispose();
             new AccessFrame();
+        } else if (e.getSource() == messageButton) {
+            System.out.println("Register Message");
+            this.dispose();
+            new RegisterFrame();
+
         }
 
     }
