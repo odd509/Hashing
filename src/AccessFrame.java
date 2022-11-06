@@ -10,6 +10,13 @@ public class AccessFrame extends JFrame implements ActionListener {
     JButton resetButton = new JButton();
     JButton homeButton = new JButton();
 
+    JTextField codenameTextField = new JTextField();
+    JPasswordField messagePWTextField = new JPasswordField();
+    JTextField usernameTextField = new JTextField();
+    JPasswordField userPWTextField = new JPasswordField();
+
+    JCheckBox checkBox;
+
     AccessFrame() {
         // --------------- panels --------------------
         // input panel
@@ -31,6 +38,7 @@ public class AccessFrame extends JFrame implements ActionListener {
 
         textLabel.setText("Message Codename");
         textPanel.add(textLabel);
+        textPanel.add(Box.createRigidArea(new Dimension(20, 20))); // buffer
 
         textLabel = new JLabel();
         textLabel.setFont(new Font("Arial", Font.PLAIN, 15));
@@ -39,6 +47,7 @@ public class AccessFrame extends JFrame implements ActionListener {
 
         textLabel.setText("Message Password");
         textPanel.add(textLabel);
+        textPanel.add(Box.createRigidArea(new Dimension(20, 20))); // buffer
 
         textLabel = new JLabel();
         textLabel.setFont(new Font("Arial", Font.PLAIN, 15));
@@ -47,6 +56,7 @@ public class AccessFrame extends JFrame implements ActionListener {
 
         textLabel.setText("Username");
         textPanel.add(textLabel);
+        textPanel.add(Box.createRigidArea(new Dimension(20, 20))); // buffer
 
         textLabel = new JLabel();
         textLabel.setFont(new Font("Arial", Font.PLAIN, 15));
@@ -59,27 +69,27 @@ public class AccessFrame extends JFrame implements ActionListener {
         // text field row
         JPanel textFieldPanel = new JPanel();
         textFieldPanel.setLayout(new BoxLayout(textFieldPanel, BoxLayout.Y_AXIS));
+        textFieldPanel.setBackground(new Color(0x310000)); // semanın fax hex
         textFieldPanel.setAlignmentX(LEFT_ALIGNMENT);
 
-        JTextField codenameTextField = new JTextField();
         codenameTextField.setAlignmentX(LEFT_ALIGNMENT);
         codenameTextField.setMinimumSize(new Dimension(0, 0));
 
-        JTextField messagePWTextField = new JTextField();
         messagePWTextField.setAlignmentX(LEFT_ALIGNMENT);
         messagePWTextField.setMinimumSize(new Dimension(0, 0));
 
-        JTextField usernameTextField = new JTextField();
         usernameTextField.setAlignmentX(LEFT_ALIGNMENT);
         usernameTextField.setMinimumSize(new Dimension(0, 0));
 
-        JTextField userPWTextField = new JTextField();
         userPWTextField.setAlignmentX(LEFT_ALIGNMENT);
         userPWTextField.setMinimumSize(new Dimension(0, 0));
 
         textFieldPanel.add(codenameTextField);
+        textFieldPanel.add(Box.createRigidArea(new Dimension(0, 20))); // buffer
         textFieldPanel.add(messagePWTextField);
+        textFieldPanel.add(Box.createRigidArea(new Dimension(0, 20))); // buffer
         textFieldPanel.add(usernameTextField);
+        textFieldPanel.add(Box.createRigidArea(new Dimension(0, 20))); // buffer
         textFieldPanel.add(userPWTextField);
 
         textFieldPanel.setMaximumSize(new Dimension(100, textPanel.getMaximumSize().height));
@@ -88,7 +98,23 @@ public class AccessFrame extends JFrame implements ActionListener {
         inputPanel.add(Box.createHorizontalStrut(20));
         inputPanel.add(textFieldPanel);
 
-        // button pannel and buttons
+        // button panels and buttons
+        JPanel buttonPanel = new JPanel();
+        buttonPanel.setBackground(new Color(0x310000)); // semanın fax hex
+        buttonPanel.setLayout(new FlowLayout(0, 30, 0));
+        buttonPanel.setMaximumSize(new Dimension(inputPanel.getMaximumSize().width, 60));
+
+        viewButton.setText("View");
+        viewButton.setFont(new Font("Arial Black", Font.PLAIN, 15));
+        viewButton.setFocusable(false);
+        viewButton.setAlignmentX(CENTER_ALIGNMENT);
+        viewButton.addActionListener(this);
+
+        resetButton.setText("Reset");
+        resetButton.setFont(new Font("Arial Black", Font.PLAIN, 15));
+        resetButton.setFocusable(false);
+        resetButton.setAlignmentX(CENTER_ALIGNMENT);
+        resetButton.addActionListener(this);
 
         homeButton.setText("Home");
         homeButton.setFont(new Font("Arial Black", Font.PLAIN, 15));
@@ -96,18 +122,33 @@ public class AccessFrame extends JFrame implements ActionListener {
         homeButton.setAlignmentX(CENTER_ALIGNMENT);
         homeButton.addActionListener(this);
 
+        buttonPanel.add(viewButton);
+        buttonPanel.add(resetButton);
+        // password checkbox
+
+        checkBox = new JCheckBox("Show Password");
+        checkBox.setForeground(Color.gray);
+        checkBox.setBackground(new Color(0x310000)); // semanın fax hexcode
+        checkBox.setAlignmentX(CENTER_ALIGNMENT);
+        checkBox.setFocusable(false);
+        checkBox.addActionListener(this);
+
         // ------------------------ frame init --------------------
         this.setTitle("Message view");
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // exit when pressed X
-        // this.setResizable(false);
-        this.setSize(450, 250);
+        this.setResizable(false);
+        this.setSize(300, 400);
 
-        this.setLayout(new BoxLayout(getContentPane(), BoxLayout.PAGE_AXIS));
+        this.setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
 
         this.add(Box.createVerticalStrut(20)); // buffer
         this.add(inputPanel);
+        this.add(checkBox);
+        this.add(Box.createVerticalStrut(20)); // buffer
+        this.add(buttonPanel);
         this.add(Box.createVerticalStrut(20)); // buffer
         this.add(homeButton);
+        this.add(Box.createVerticalStrut(20)); // buffer
 
         this.getContentPane().setBackground(new Color(0x310000)); // semanın fax hexcode
         this.setVisible(true);
@@ -116,11 +157,29 @@ public class AccessFrame extends JFrame implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        System.out.println("as");
-        if (e.getSource() == homeButton) {
+        if (e.getSource() == viewButton) {
+            System.out.println("View");
+            // check validations
+
+        } else if (e.getSource() == resetButton) {
+            System.out.println("Reset");
+            codenameTextField.setText("");
+            messagePWTextField.setText("");
+            usernameTextField.setText("");
+            userPWTextField.setText("");
+
+        } else if (e.getSource() == homeButton) {
             System.out.println("Home");
             this.dispose();
             new HomeFrame();
+        } else if (e.getSource() == checkBox) {
+            if (checkBox.isSelected()) {
+                userPWTextField.setEchoChar((char) 0);
+                messagePWTextField.setEchoChar((char) 0);
+            } else {
+                userPWTextField.setEchoChar('*');
+                messagePWTextField.setEchoChar('*');
+            }
         }
     }
 

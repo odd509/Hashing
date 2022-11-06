@@ -100,7 +100,7 @@ public class HomeFrame extends JFrame implements ActionListener {
         // ------------------------ frame init --------------------
         this.setTitle("Main Page");
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // exit when pressed X
-        // this.setResizable(false);
+        this.setResizable(true);
         this.setSize(350, 250);
 
         this.setLayout(new BorderLayout());
