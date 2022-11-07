@@ -1,3 +1,5 @@
+package UI;
+
 import java.awt.*;
 import javax.swing.*;
 
@@ -48,6 +50,8 @@ public class MessageFrame extends JFrame implements ActionListener {
         this.setSize(450, 450);
         this.setVisible(true);
         this.setLocationRelativeTo(null); // set frame initialization location to centre of the screen
+        getRootPane().setBorder(BorderFactory.createMatteBorder(4, 4, 4, 4, Color.black)); // black outline
+
     }
 
     @Override

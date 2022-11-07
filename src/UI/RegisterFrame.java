@@ -1,3 +1,5 @@
+package UI;
+
 import java.awt.*;
 import javax.swing.*;
 
@@ -9,7 +11,7 @@ public class RegisterFrame extends JFrame implements ActionListener {
     JButton crateMessageButton = new JButton();
     JButton homeButton = new JButton();
 
-    JComboBox usernameBox;
+    JComboBox<String> usernameBox;
     JPasswordField passwordTextField = new JPasswordField();
     JTextField messageCodenameTextField = new JTextField();
     JPasswordField confPasswordTextField = new JPasswordField();
@@ -21,7 +23,7 @@ public class RegisterFrame extends JFrame implements ActionListener {
 
         // combo box
         String[] list = { "sema", "ouz" };
-        usernameBox = new JComboBox(list);
+        usernameBox = new JComboBox<String>(list);
         usernameBox.addActionListener(this);
         usernameBox.setEditable(true);
         usernameBox.setMaximumSize(new Dimension(300, 5));
@@ -168,6 +170,8 @@ public class RegisterFrame extends JFrame implements ActionListener {
         this.getContentPane().setBackground(new Color(0x310000)); // semanın fax hexcode
         this.setVisible(true);
         this.setLocationRelativeTo(null); // set frame initialization location to centre of the screen
+        getRootPane().setBorder(BorderFactory.createMatteBorder(4, 4, 4, 4, Color.black)); // black outline
+
     }
 
     @Override

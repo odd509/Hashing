@@ -1,3 +1,5 @@
+package UI;
+
 import java.awt.*;
 import javax.swing.*;
 
@@ -8,8 +10,10 @@ public class HomeFrame extends JFrame implements ActionListener {
 
     JButton accessButton = new JButton();
     JButton messageButton = new JButton();
+    JButton signupButton = new JButton();
+    JButton exitButton = new JButton();
 
-    HomeFrame() {
+    public HomeFrame() {
 
         /*
          * ImageIcon semaImage = new ImageIcon("assets/sema.jpeg");
@@ -79,11 +83,27 @@ public class HomeFrame extends JFrame implements ActionListener {
         messageButton.setAlignmentX(CENTER_ALIGNMENT);
         messageButton.addActionListener(this);
 
+        signupButton.setText("Sign Up");
+        signupButton.setFont(new Font("Arial Black", Font.PLAIN, 15));
+        signupButton.setFocusable(false);
+        signupButton.setAlignmentX(CENTER_ALIGNMENT);
+        signupButton.addActionListener(this);
+
+        exitButton.setText("Exit");
+        exitButton.setFont(new Font("Arial Black", Font.PLAIN, 15));
+        exitButton.setFocusable(false);
+        exitButton.setAlignmentX(CENTER_ALIGNMENT);
+        exitButton.addActionListener(this);
+
         buttonsPanel.add(Box.createVerticalStrut(20)); // buffer space
         buttonsPanel.add(accessButton);
         buttonsPanel.add(Box.createVerticalStrut(20));
         buttonsPanel.add(messageButton);
-
+        buttonsPanel.add(Box.createVerticalStrut(20));
+        buttonsPanel.add(signupButton);
+        buttonsPanel.add(Box.createVerticalStrut(20)); // buffer space
+        buttonsPanel.add(exitButton);
+        buttonsPanel.add(Box.createVerticalStrut(20)); // buffer space
         // credit panel
         JPanel creditsPanel = new JPanel();
         creditsPanel.setBackground(new Color(0x310000)); // semanın fax hex
@@ -101,7 +121,7 @@ public class HomeFrame extends JFrame implements ActionListener {
         this.setTitle("Main Page");
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // exit when pressed X
         this.setResizable(true);
-        this.setSize(350, 250);
+        this.setSize(350, 350);
 
         this.setLayout(new BorderLayout());
 
@@ -120,6 +140,7 @@ public class HomeFrame extends JFrame implements ActionListener {
         this.setVisible(true);
         this.setLocationRelativeTo(null); // set frame initialization location to centre of the screen
 
+        getRootPane().setBorder(BorderFactory.createMatteBorder(4, 4, 4, 4, Color.black)); // black outline
     }
 
     @Override
@@ -129,10 +150,20 @@ public class HomeFrame extends JFrame implements ActionListener {
             System.out.println("Access");
             this.dispose();
             new AccessFrame();
+
         } else if (e.getSource() == messageButton) {
             System.out.println("Register Message");
             this.dispose();
             new RegisterFrame();
+
+        } else if (e.getSource() == signupButton) {
+            System.out.println("Signup User");
+            this.dispose();
+            new SignupFrame();
+
+        } else if (e.getSource() == exitButton) {
+            System.out.println("Exit");
+            System.exit(0);
 
         }
 

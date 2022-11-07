@@ -1,3 +1,5 @@
+package UI;
+
 import java.awt.*;
 import javax.swing.*;
 
@@ -153,6 +155,8 @@ public class AccessFrame extends JFrame implements ActionListener {
         this.getContentPane().setBackground(new Color(0x310000)); // semanın fax hexcode
         this.setVisible(true);
         this.setLocationRelativeTo(null); // set frame initialization location to centre of the screen
+        getRootPane().setBorder(BorderFactory.createMatteBorder(4, 4, 4, 4, Color.black)); // black outline
+
     }
 
     @Override
