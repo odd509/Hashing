@@ -13,7 +13,7 @@ public class RegisterFrame extends JFrame implements ActionListener {
     JPasswordField passwordTextField = new JPasswordField();
     JTextField messageCodenameTextField = new JTextField();
     JPasswordField confPasswordTextField = new JPasswordField();
-    JTextField messageTextField = new JTextField();
+    JTextArea messageTextField = new JTextArea();
 
     RegisterFrame() {
         // --------------- panels --------------------
@@ -117,7 +117,6 @@ public class RegisterFrame extends JFrame implements ActionListener {
         messagePanel.setBackground(new Color(0x310000)); // semanın fax hex
         messagePanel.setLayout(new BoxLayout(messagePanel, BoxLayout.X_AXIS));
         messagePanel.setMaximumSize(new Dimension(600, 300));
-        messagePanel.setAlignmentY(TOP_ALIGNMENT);
 
         textLabel = new JLabel();
         textLabel.setFont(new Font("Arial", Font.PLAIN, 15));
@@ -127,12 +126,16 @@ public class RegisterFrame extends JFrame implements ActionListener {
 
         messagePanel.add(textLabel);
         messagePanel.add(Box.createRigidArea(new Dimension(30, 0))); // buffer
+
+        messageTextField.setPreferredSize(new Dimension(430, 200));
+        messageTextField.setMaximumSize(messageTextField.getPreferredSize());
+
         messagePanel.add(messageTextField);
 
         // button panels and buttons
         JPanel buttonPanel = new JPanel();
         buttonPanel.setBackground(new Color(0x310000)); // semanın fax hex
-        buttonPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 30, 0));
+        buttonPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 150, 0));
 
         crateMessageButton.setText("Create Message");
         crateMessageButton.setFont(new Font("Arial Black", Font.PLAIN, 15));
@@ -158,11 +161,9 @@ public class RegisterFrame extends JFrame implements ActionListener {
 
         this.add(Box.createVerticalStrut(20)); // buffer
         this.add(nest2);
-        this.add(Box.createVerticalStrut(20)); // buffer
         this.add(messagePanel);
         this.add(Box.createVerticalStrut(20)); // buffer
         this.add(buttonPanel);
-        this.add(Box.createVerticalStrut(20)); // buffer
 
         this.getContentPane().setBackground(new Color(0x310000)); // semanın fax hexcode
         this.setVisible(true);
