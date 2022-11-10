@@ -5,5 +5,7 @@ public class App {
 
         new HomeFrame();
 
+        Thread onExit = new Thread(() -> System.out.println("In the middle of a shutdown"));
+        Runtime.getRuntime().addShutdownHook(onExit);
     }
 }
