@@ -1,6 +1,9 @@
 package UI;
 
+import Backend.DataBase;
 import Backend.Message;
+import Backend.NotAUniqueFieldException;
+import Backend.User;
 
 import java.awt.*;
 import javax.swing.*;
@@ -21,13 +24,21 @@ public class RegisterFrame extends JFrame implements ActionListener {
     JTextArea messageTextField = new JTextArea();
 
     JCheckBox checkBox;
+    User selectedUser = null;
 
     RegisterFrame() {
         // --------------- panels --------------------
         // input panel
 
         // combo box
-        String[] list = { "sema", "ouz" };
+
+        String[] list = new String[DataBase.getUserDB().size()];
+        int counter = 0;
+        for (User user : DataBase.getUserDB()) {
+            list[counter] = user.getUsername();
+            counter++;
+        }
+
         usernameBox = new JComboBox<String>(list);
         usernameBox.addActionListener(this);
         usernameBox.setEditable(true);
@@ -192,9 +203,14 @@ public class RegisterFrame extends JFrame implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        String name = String.valueOf(usernameBox.getSelectedItem());
+        selectedUser = DataBase.findUser(name);
 
         if (e.getSource() == usernameBox) {
-            System.out.println(usernameBox.getSelectedItem());
+            name = String.valueOf(usernameBox.getSelectedItem());
+
+            selectedUser = DataBase.findUser(name);
+
         } else if (e.getSource() == crateMessageButton) {
 
             if (passwordTextField.getPassword().length == 0) {
@@ -219,9 +235,20 @@ public class RegisterFrame extends JFrame implements ActionListener {
             } else if (messageTextField.getText().contains("-") || messageTextField.getText().contains("_")) {
                 JOptionPane.showMessageDialog(rootPane, "Message can not contain \"-\"or \"_\"", "ERROR",
                         JOptionPane.ERROR_MESSAGE);
+            } else if (selectedUser == null) {
+                JOptionPane.showMessageDialog(rootPane, "Please select a valid user", "ERROR",
+                        JOptionPane.ERROR_MESSAGE);
             } else {
-                // new Message(messageCodenameTextField.getText(), messageTextField.getText(), ,
-                // new String(passwordTextField.getPassword()));
+                try {
+                    new Message(messageCodenameTextField.getText(), messageTextField.getText(), selectedUser,
+                            new String(passwordTextField.getPassword()));
+                    JOptionPane.showMessageDialog(rootPane, "Message sent successfully", "Message",
+                            JOptionPane.INFORMATION_MESSAGE);
+                } catch (NotAUniqueFieldException exception) {
+                    JOptionPane.showMessageDialog(rootPane, exception, "ERROR",
+                            JOptionPane.ERROR_MESSAGE);
+                }
+
             }
         } else if (e.getSource() == homeButton) {
             System.out.println("Home");

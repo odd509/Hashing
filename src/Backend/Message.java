@@ -43,6 +43,7 @@ public class Message {
             MessageDigest digest = MessageDigest.getInstance("SHA3-256");
             byte[] hashedBytes = digest.digest(messagePassword.getBytes(StandardCharsets.UTF_8));
             this.hashedMessagePassword = Base64.getEncoder().encodeToString(hashedBytes);
+            DataBase.getMessageDB().add(this);
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
         }

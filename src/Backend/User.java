@@ -34,6 +34,8 @@ public class User {
             MessageDigest digest = MessageDigest.getInstance("SHA3-256");
             byte[] hashedBytes = digest.digest(userPassword.getBytes(StandardCharsets.UTF_8));
             this.hashedUserPassword = Base64.getEncoder().encodeToString(hashedBytes);
+            DataBase.getUserDB().add(this);
+
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
         }

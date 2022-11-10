@@ -3,6 +3,9 @@ package UI;
 import java.awt.*;
 import javax.swing.*;
 
+import Backend.DataBase;
+import Backend.Utils;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -170,10 +173,16 @@ public class AccessFrame extends JFrame implements ActionListener {
              * usernameTextField.getText();
              * userPWTextField.getPassword();
              */
-
-            this.dispose();
-            new MessageFrame(
-                    "Test message.");
+            if (!Utils.checkMessageHash(codenameTextField.getText(), new String(messagePWTextField.getPassword()))) {
+                JOptionPane.showMessageDialog(rootPane, "Message ID or password incorrect", "ERROR",
+                        JOptionPane.ERROR_MESSAGE);
+            } else if (!Utils.checkUserHash(usernameTextField.getText(), new String(userPWTextField.getPassword()))) {
+                JOptionPane.showMessageDialog(rootPane, "User ID or password incorrect", "ERROR",
+                        JOptionPane.ERROR_MESSAGE);
+            } else {
+                this.dispose();
+                new MessageFrame(DataBase.findMessage(codenameTextField.getText()).getMessageContent());
+            }
 
         } else if (e.getSource() == resetButton) {
             System.out.println("Reset");
