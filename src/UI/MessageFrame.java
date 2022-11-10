@@ -13,6 +13,8 @@ public class MessageFrame extends JFrame implements ActionListener {
     MessageFrame(String message) {
 
         JTextArea textArea = new JTextArea(message);
+        textArea.setEditable(false);
+        textArea.setFont(new Font("Arial", Font.PLAIN, 15));
         JScrollPane messagePane = new JScrollPane(textArea);
 
         JPanel ButtonPanel = new JPanel();

@@ -1,10 +1,13 @@
 package UI;
 
 import java.awt.*;
+
+import javax.annotation.processing.SupportedOptions;
 import javax.swing.*;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Arrays;
 
 public class SignupFrame extends JFrame implements ActionListener {
 
@@ -148,6 +151,25 @@ public class SignupFrame extends JFrame implements ActionListener {
             System.out.println("Sign up");
             // check validations
             // if valid, success pop up
+
+            // if username is taken
+
+            // else if passwords dont match
+
+            if (usernameTextField.getText().length() == 0) {
+                JOptionPane.showMessageDialog(rootPane, "Username can not be empty", "ERROR",
+                        JOptionPane.ERROR_MESSAGE);
+            } else if (userPWTextField.getPassword().length == 0) {
+                JOptionPane.showMessageDialog(rootPane, "Password can not be empty", "ERROR",
+                        JOptionPane.ERROR_MESSAGE);
+            } else if (confirmPWTextField.getPassword().length == 0) {
+                JOptionPane.showMessageDialog(rootPane, "Confirm password can not be empty", "ERROR",
+                        JOptionPane.ERROR_MESSAGE);
+            } else if (!Arrays.equals(userPWTextField.getPassword(), confirmPWTextField.getPassword())) {
+                JOptionPane.showMessageDialog(rootPane, "Passwords do not match", "ERROR", JOptionPane.ERROR_MESSAGE);
+            } else {
+                System.out.println("zito");
+            }
 
         } else if (e.getSource() == homeButton) {
             System.out.println("Home");

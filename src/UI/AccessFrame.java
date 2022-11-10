@@ -164,9 +164,16 @@ public class AccessFrame extends JFrame implements ActionListener {
         if (e.getSource() == viewButton) {
             System.out.println("View");
             // check validations
+            /*
+             * codenameTextField.getText();
+             * messagePWTextField.getPassword();
+             * usernameTextField.getText();
+             * userPWTextField.getPassword();
+             */
+
             this.dispose();
             new MessageFrame(
-                    "masajaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\naaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\n\n\n\n\n\n\n\n\n\n\nasdasdasdasdsad\n\n\n\n\n");
+                    "Test message.");
 
         } else if (e.getSource() == resetButton) {
             System.out.println("Reset");

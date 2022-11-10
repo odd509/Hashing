@@ -39,21 +39,26 @@ public class Utils {
                 cipher.init(Cipher.ENCRYPT_MODE, key, ivSpec);
 
                 // encrypting and writing the message data file down
+                String stringToWrite = "";
                 for (Message message : DataBase.getMessageDB()) {
-                    String stringToWrite = message.getMessageID() + " " + message.getMessageContent() + " "
+                    stringToWrite += message.getMessageID() + " " + message.getMessageContent() + " "
                             + message.getHashedPassword() + " " + message.getReceivingUser().getUsername() + "\n";
-                    byte[] messageArr = stringToWrite.getBytes(StandardCharsets.UTF_8);
-                    byte[] cipherArray = cipher.doFinal(messageArr);
-                    messageOStream.write(cipherArray);
-                }
 
+                }
+                byte[] messageArr = stringToWrite.getBytes(StandardCharsets.UTF_8);
+                byte[] cipherArray = cipher.doFinal(messageArr);
+                messageOStream.write(cipherArray);
+
+                stringToWrite = "";
                 // encrypting and writing the user data file down
                 for (User user : DataBase.getUserDB()) {
-                    String stringToWrite = user.getUsername() + " " + user.getHashedPassword() + "\n";
-                    byte[] userArr = stringToWrite.getBytes(StandardCharsets.UTF_8);
-                    byte[] cipherArray = cipher.doFinal(userArr);
-                    userOStream.write(cipherArray);
+                    stringToWrite += user.getUsername() + " " + user.getHashedPassword() + "\n";
+
                 }
+                byte[] userArr = stringToWrite.getBytes(StandardCharsets.UTF_8);
+                cipherArray = cipher.doFinal(userArr);
+                userOStream.write(cipherArray);
+
             } catch (IllegalBlockSizeException | BadPaddingException | NoSuchAlgorithmException | NoSuchPaddingException
                     | InvalidKeyException | InvalidAlgorithmParameterException e) {
                 e.printStackTrace();
