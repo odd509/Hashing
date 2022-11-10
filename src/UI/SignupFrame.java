@@ -1,8 +1,6 @@
 package UI;
 
 import java.awt.*;
-
-import javax.annotation.processing.SupportedOptions;
 import javax.swing.*;
 
 import java.awt.event.ActionEvent;

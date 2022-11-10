@@ -5,6 +5,7 @@ import javax.swing.*;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Arrays;
 
 public class RegisterFrame extends JFrame implements ActionListener {
 
@@ -16,6 +17,8 @@ public class RegisterFrame extends JFrame implements ActionListener {
     JTextField messageCodenameTextField = new JTextField();
     JPasswordField confPasswordTextField = new JPasswordField();
     JTextArea messageTextField = new JTextArea();
+
+    JCheckBox checkBox;
 
     RegisterFrame() {
         // --------------- panels --------------------
@@ -92,7 +95,7 @@ public class RegisterFrame extends JFrame implements ActionListener {
         textFieldPanel.setMaximumSize(new Dimension(150, textPanel.getMaximumSize().height));
 
         inputPanel.add(textPanel);
-        inputPanel.add(Box.createHorizontalStrut(20));
+        inputPanel.add(Box.createRigidArea(new Dimension(0, 15))); // buffer
         inputPanel.add(textFieldPanel);
 
         // nest one conf pass
@@ -104,6 +107,7 @@ public class RegisterFrame extends JFrame implements ActionListener {
         nest1.setMaximumSize(new Dimension(300, textPanel.getMaximumSize().height / 4));
 
         nest1.add(textLabel);
+        textFieldPanel.add(Box.createRigidArea(new Dimension(0, 15))); // buffer
         nest1.add(confPasswordTextField);
 
         // nest two auth and confirm pass
@@ -113,6 +117,14 @@ public class RegisterFrame extends JFrame implements ActionListener {
         nest2.add(inputPanel);
         nest2.add(Box.createRigidArea(new Dimension(15, 0))); // buffer
         nest2.add(nest1);
+        // password checkbox
+
+        checkBox = new JCheckBox("Show Password");
+        checkBox.setForeground(Color.gray);
+        checkBox.setBackground(new Color(0x310000)); // semanın fax hexcode
+        checkBox.setAlignmentX(LEFT_ALIGNMENT);
+        checkBox.setFocusable(false);
+        checkBox.addActionListener(this);
 
         // message panel
         JPanel messagePanel = new JPanel();
@@ -163,6 +175,8 @@ public class RegisterFrame extends JFrame implements ActionListener {
 
         this.add(Box.createVerticalStrut(20)); // buffer
         this.add(nest2);
+        this.add(checkBox);
+        this.add(Box.createVerticalStrut(20)); // buffer
         this.add(messagePanel);
         this.add(Box.createVerticalStrut(20)); // buffer
         this.add(buttonPanel);
@@ -181,11 +195,33 @@ public class RegisterFrame extends JFrame implements ActionListener {
             System.out.println(usernameBox.getSelectedItem());
         } else if (e.getSource() == crateMessageButton) {
 
+            if (passwordTextField.getPassword().length == 0) {
+                JOptionPane.showMessageDialog(rootPane, "Password can not be empty", "ERROR",
+                        JOptionPane.ERROR_MESSAGE);
+            } else if (confPasswordTextField.getPassword().length == 0) {
+                JOptionPane.showMessageDialog(rootPane, "Confirm password can not be empty", "ERROR",
+                        JOptionPane.ERROR_MESSAGE);
+            } else if (!Arrays.equals(passwordTextField.getPassword(), confPasswordTextField.getPassword())) {
+                JOptionPane.showMessageDialog(rootPane, "Passwords do not match", "ERROR", JOptionPane.ERROR_MESSAGE);
+            } else if (messageCodenameTextField.getText().length() == 0) {
+                JOptionPane.showMessageDialog(rootPane, "Message codename can nor be empty", "ERROR",
+                        JOptionPane.ERROR_MESSAGE);
+            } else {
+                System.out.println("zito");
+            }
         } else if (e.getSource() == homeButton) {
             System.out.println("Home");
             this.dispose();
             new HomeFrame();
 
+        } else if (e.getSource() == checkBox) {
+            if (checkBox.isSelected()) {
+                passwordTextField.setEchoChar((char) 0);
+                confPasswordTextField.setEchoChar((char) 0);
+            } else {
+                passwordTextField.setEchoChar('*');
+                confPasswordTextField.setEchoChar('*');
+            }
         }
 
     }
