@@ -1,5 +1,7 @@
 package UI;
 
+import Backend.Message;
+
 import java.awt.*;
 import javax.swing.*;
 
@@ -201,13 +203,25 @@ public class RegisterFrame extends JFrame implements ActionListener {
             } else if (confPasswordTextField.getPassword().length == 0) {
                 JOptionPane.showMessageDialog(rootPane, "Confirm password can not be empty", "ERROR",
                         JOptionPane.ERROR_MESSAGE);
+            } else if (new String(passwordTextField.getPassword()).contains("-")
+                    || new String(passwordTextField.getPassword()).contains("_")) {
+                JOptionPane.showMessageDialog(rootPane, "Passwords can not contain \"-\"or \"_\"", "ERROR",
+                        JOptionPane.ERROR_MESSAGE);
             } else if (!Arrays.equals(passwordTextField.getPassword(), confPasswordTextField.getPassword())) {
                 JOptionPane.showMessageDialog(rootPane, "Passwords do not match", "ERROR", JOptionPane.ERROR_MESSAGE);
             } else if (messageCodenameTextField.getText().length() == 0) {
-                JOptionPane.showMessageDialog(rootPane, "Message codename can nor be empty", "ERROR",
+                JOptionPane.showMessageDialog(rootPane, "Message codename can not be empty", "ERROR",
+                        JOptionPane.ERROR_MESSAGE);
+            } else if (messageCodenameTextField.getText().contains("-")
+                    || messageCodenameTextField.getText().contains("_")) {
+                JOptionPane.showMessageDialog(rootPane, "Message can not contain \"-\" or \"_\"", "ERROR",
+                        JOptionPane.ERROR_MESSAGE);
+            } else if (messageTextField.getText().contains("-") || messageTextField.getText().contains("_")) {
+                JOptionPane.showMessageDialog(rootPane, "Message can not contain \"-\"or \"_\"", "ERROR",
                         JOptionPane.ERROR_MESSAGE);
             } else {
-                System.out.println("zito");
+                // new Message(messageCodenameTextField.getText(), messageTextField.getText(), ,
+                // new String(passwordTextField.getPassword()));
             }
         } else if (e.getSource() == homeButton) {
             System.out.println("Home");
