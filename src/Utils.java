@@ -17,8 +17,8 @@ import javax.crypto.spec.SecretKeySpec;
 
 public class Utils {
 
-    private static final byte[] PRIVATE_KEY = "".getBytes(StandardCharsets.UTF_8);
-    private static final byte[] INITIALIZATION_VECTOR = "".getBytes(StandardCharsets.UTF_8);
+    private static final byte[] PRIVATE_KEY = "ouz".getBytes(StandardCharsets.UTF_8);
+    private static final byte[] INITIALIZATION_VECTOR = "sema".getBytes(StandardCharsets.UTF_8);
 
     /**
      * Reads and decrypts the data files, creates the message and user objects and
