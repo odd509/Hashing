@@ -1,3 +1,5 @@
+package Backend;
+
 /**
  * This exception is thrown when the user enters a username or a message ID that
  * is not unique.

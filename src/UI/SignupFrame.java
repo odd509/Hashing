@@ -1,9 +1,10 @@
 package UI;
 
 import java.awt.*;
-
-import javax.annotation.processing.SupportedOptions;
 import javax.swing.*;
+
+import Backend.NotAUniqueFieldException;
+import Backend.User;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -159,16 +160,30 @@ public class SignupFrame extends JFrame implements ActionListener {
             if (usernameTextField.getText().length() == 0) {
                 JOptionPane.showMessageDialog(rootPane, "Username can not be empty", "ERROR",
                         JOptionPane.ERROR_MESSAGE);
+            } else if (usernameTextField.getText().contains("-") || usernameTextField.getText().contains("_")) {
+                JOptionPane.showMessageDialog(rootPane, "Usernames can not contain \"-\"or \"_\"", "ERROR",
+                        JOptionPane.ERROR_MESSAGE);
             } else if (userPWTextField.getPassword().length == 0) {
                 JOptionPane.showMessageDialog(rootPane, "Password can not be empty", "ERROR",
                         JOptionPane.ERROR_MESSAGE);
             } else if (confirmPWTextField.getPassword().length == 0) {
                 JOptionPane.showMessageDialog(rootPane, "Confirm password can not be empty", "ERROR",
                         JOptionPane.ERROR_MESSAGE);
+            } else if (new String(userPWTextField.getPassword()).contains("-")
+                    || new String(userPWTextField.getPassword()).contains("_")) {
+                JOptionPane.showMessageDialog(rootPane, "Passwords can not contain \"-\"or \"_\"", "ERROR",
+                        JOptionPane.ERROR_MESSAGE);
             } else if (!Arrays.equals(userPWTextField.getPassword(), confirmPWTextField.getPassword())) {
                 JOptionPane.showMessageDialog(rootPane, "Passwords do not match", "ERROR", JOptionPane.ERROR_MESSAGE);
             } else {
-                System.out.println("zito");
+                try {
+                    new User(usernameTextField.getText(), new String(userPWTextField.getPassword()));
+                    JOptionPane.showMessageDialog(rootPane, "Signed up successfully", "Sign up",
+                            JOptionPane.INFORMATION_MESSAGE);
+                } catch (NotAUniqueFieldException exception) {
+                    JOptionPane.showMessageDialog(rootPane, exception, "ERROR",
+                            JOptionPane.ERROR_MESSAGE);
+                }
             }
 
         } else if (e.getSource() == homeButton) {
