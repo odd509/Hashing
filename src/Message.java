@@ -22,10 +22,10 @@ public class Message {
      * @param messageID
      * @param messageContent
      * @param receivingUser
-     * @param hashedMessagePassword
+     * @param messagePassword
      * @throws NotAUniqueFieldException
      */
-    public Message(String messageID, String messageContent, User receivingUser, String hashedMessagePassword)
+    public Message(String messageID, String messageContent, User receivingUser, String messagePassword)
             throws NotAUniqueFieldException {
         if (messageIDs.contains(messageID)) {
             throw new NotAUniqueFieldException("This message ID exists: " + messageID);
@@ -39,7 +39,7 @@ public class Message {
             // Hashing the given password string and converting it to base64 to represent it
             // as a string
             MessageDigest digest = MessageDigest.getInstance("SHA3-256");
-            byte[] hashedBytes = digest.digest(hashedMessagePassword.getBytes(StandardCharsets.UTF_8));
+            byte[] hashedBytes = digest.digest(messagePassword.getBytes(StandardCharsets.UTF_8));
             this.hashedMessagePassword = Base64.getEncoder().encodeToString(hashedBytes);
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();

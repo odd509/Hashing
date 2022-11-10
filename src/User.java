@@ -18,10 +18,10 @@ public class User {
      * and then saves it.
      * 
      * @param username
-     * @param hashedUserPassword
+     * @param userPassword
      * @throws NotAUniqueFieldException
      */
-    public User(String username, String hashedUserPassword) throws NotAUniqueFieldException {
+    public User(String username, String userPassword) throws NotAUniqueFieldException {
         if (usernames.contains(username)) {
             throw new NotAUniqueFieldException("This username exists: " + username);
         }
@@ -30,7 +30,7 @@ public class User {
             // Hashing the given password string and converting it to base64 to represent it
             // as a string
             MessageDigest digest = MessageDigest.getInstance("SHA3-256");
-            byte[] hashedBytes = digest.digest(hashedUserPassword.getBytes(StandardCharsets.UTF_8));
+            byte[] hashedBytes = digest.digest(userPassword.getBytes(StandardCharsets.UTF_8));
             this.hashedUserPassword = Base64.getEncoder().encodeToString(hashedBytes);
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
@@ -38,7 +38,6 @@ public class User {
 
         this.username = username;
         usernames.add(username);
-        this.hashedUserPassword = hashedUserPassword;
     }
 
     public String getUsername() {

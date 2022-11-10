@@ -5,7 +5,9 @@ import java.io.FileInputStream;
 import java.nio.charset.StandardCharsets;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
+import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.Base64;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
@@ -51,28 +53,20 @@ public class Utils {
                 byte[] decryptedUsers = cipher.doFinal(userCipherArr);
 
                 String UserString = new String(decryptedUsers, StandardCharsets.UTF_8);
-                String[] users = UserString.split("\n");
+                String[] users = UserString.split("_");
                 for (String user : users) {
-                    String[] userInfo = user.split(" ");
+                    String[] userInfo = user.split("-");
                     User newUser = new User(userInfo[0], userInfo[1]);
                     // adding the new user instance to the static user arraylist in DataBase class
                     DataBase.getUserDB().add(newUser);
                 }
 
                 String messageString = new String(decryptedMessages, StandardCharsets.UTF_8);
-                String[] messages = messageString.split("\n");
+                String[] messages = messageString.split("_");
                 for (String message : messages) {
-                    String[] messageInfo = message.split(" ");
-                    int userIndex = 0;
-                    for (User user : DataBase.getUserDB()) {
-                        if (user.getUsername().equals(messageInfo[3])) {
-                            userIndex = DataBase.getUserDB().indexOf(user);
-                            break;
-                        }
-                        ;
-                    }
-                    Message newMessage = new Message(messageInfo[0], messageInfo[1],
-                            DataBase.getUserDB().get(userIndex), messageInfo[2]);
+                    String[] messageInfo = message.split("-");
+                    Message newMessage = new Message(messageInfo[0], messageInfo[1], DataBase.findUser(messageInfo[3]),
+                            messageInfo[2]);
                     // adding the new message instance to the static message arraylist in DataBase
                     // class
                     DataBase.getMessageDB().add(newMessage);
@@ -114,9 +108,8 @@ public class Utils {
                 // encrypting and writing the message data file down
                 String stringToWrite = "";
                 for (Message message : DataBase.getMessageDB()) {
-                    stringToWrite += message.getMessageID() + " " + message.getMessageContent() + " "
-                            + message.getHashedPassword() + " " + message.getReceivingUser().getUsername() + "\n";
-
+                    stringToWrite += message.getMessageID() + "-" + message.getMessageContent() + "-"
+                            + message.getHashedPassword() + "-" + message.getReceivingUser().getUsername() + "_";
                 }
                 byte[] messageArr = stringToWrite.getBytes(StandardCharsets.UTF_8);
                 byte[] cipherArray = cipher.doFinal(messageArr);
@@ -125,7 +118,7 @@ public class Utils {
                 stringToWrite = "";
                 // encrypting and writing the user data file down
                 for (User user : DataBase.getUserDB()) {
-                    stringToWrite += user.getUsername() + " " + user.getHashedPassword() + "\n";
+                    stringToWrite += user.getUsername() + "-" + user.getHashedPassword() + "_";
 
                 }
                 byte[] userArr = stringToWrite.getBytes(StandardCharsets.UTF_8);
@@ -146,5 +139,47 @@ public class Utils {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * Checks if the given messageID and password matches by checking the hashes.
+     * 
+     * @param messageID
+     * @param password
+     * @return
+     */
+    public static boolean checkMessageHash(String messageID, String password) {
+        try {
+            MessageDigest digest = MessageDigest.getInstance("SHA3-256");
+            byte[] hashedBytes = digest.digest(password.getBytes(StandardCharsets.UTF_8));
+            String hashedPassword = Base64.getEncoder().encodeToString(hashedBytes);
+            if (DataBase.findMessage(messageID).getHashedPassword().equals(hashedPassword)) {
+                return true;
+            }
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    /**
+     * Checks if the given messageID and password matches by checking the hashes.
+     * 
+     * @param username
+     * @param password
+     * @return
+     */
+    public static boolean checkUserHash(String username, String password) {
+        try {
+            MessageDigest digest = MessageDigest.getInstance("SHA3-256");
+            byte[] hashedBytes = digest.digest(password.getBytes(StandardCharsets.UTF_8));
+            String hashedPassword = Base64.getEncoder().encodeToString(hashedBytes);
+            if (DataBase.findUser(username).getHashedPassword().equals(hashedPassword)) {
+                return true;
+            }
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 }

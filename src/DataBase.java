@@ -16,4 +16,33 @@ public class DataBase {
         return userDB;
     }
 
+    /**
+     * Method used to find the message object in the database using the ID.
+     * 
+     * @param messageID
+     * @return
+     */
+    public static Message findMessage(String messageID) {
+        for (Message message : messageDB) {
+            if (message.getMessageID().equals(messageID)) {
+                return message;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Method used to find the user object in the database using the username.
+     * 
+     * @param username
+     * @return
+     */
+    public static User findUser(String username) {
+        for (User user : userDB) {
+            if (user.getUsername().equals(username)) {
+                return user;
+            }
+        }
+        return null;
+    }
 }
