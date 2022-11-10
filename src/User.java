@@ -1,3 +1,7 @@
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.Base64;
 import java.util.HashSet;
 
 public class User {
@@ -9,7 +13,9 @@ public class User {
     private String hashedUserPassword;
 
     /**
-     * Instantiates the class with its properties including its unique username.
+     * Instantiates the class with its properties including its unique username and
+     * hashes the password with SHA3-256 algorithm.
+     * and then saves it.
      * 
      * @param username
      * @param hashedUserPassword
@@ -19,6 +25,17 @@ public class User {
         if (usernames.contains(username)) {
             throw new NotAUniqueFieldException("This username exists: " + username);
         }
+
+        try {
+            // Hashing the given password string and converting it to base64 to represent it
+            // as a string
+            MessageDigest digest = MessageDigest.getInstance("SHA3-256");
+            byte[] hashedBytes = digest.digest(hashedUserPassword.getBytes(StandardCharsets.UTF_8));
+            this.hashedUserPassword = Base64.getEncoder().encodeToString(hashedBytes);
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+
         this.username = username;
         usernames.add(username);
         this.hashedUserPassword = hashedUserPassword;
