@@ -41,7 +41,8 @@ public class RegisterFrame extends JFrame implements ActionListener {
 
         usernameBox = new JComboBox<String>(list);
         usernameBox.addActionListener(this);
-        usernameBox.setEditable(true);
+        usernameBox.setEditable(false);
+        usernameBox.setSelectedItem(null);
         usernameBox.setMaximumSize(new Dimension(300, 5));
 
         // --------------- panels --------------------
@@ -203,12 +204,9 @@ public class RegisterFrame extends JFrame implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        String name = String.valueOf(usernameBox.getSelectedItem());
-        selectedUser = DataBase.findUser(name);
 
         if (e.getSource() == usernameBox) {
-            name = String.valueOf(usernameBox.getSelectedItem());
-
+            String name = String.valueOf(usernameBox.getSelectedItem());
             selectedUser = DataBase.findUser(name);
 
         } else if (e.getSource() == crateMessageButton) {

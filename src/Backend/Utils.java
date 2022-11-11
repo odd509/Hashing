@@ -9,6 +9,7 @@ import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.Arrays;
 import java.util.Base64;
 
 import javax.crypto.BadPaddingException;
@@ -18,11 +19,12 @@ import javax.crypto.NoSuchPaddingException;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
+import javax.sound.sampled.SourceDataLine;
 
 public class Utils {
 
-    private static final byte[] PRIVATE_KEY = "ouz".getBytes(StandardCharsets.UTF_8);
-    private static final byte[] INITIALIZATION_VECTOR = "sema".getBytes(StandardCharsets.UTF_8);
+    private static final byte[] PRIVATE_KEY = Arrays.copyOf("ouz".getBytes(StandardCharsets.UTF_8), 24);
+    private static final byte[] INITIALIZATION_VECTOR = Arrays.copyOf("sema".getBytes(StandardCharsets.UTF_8), 8);
 
     /**
      * Reads and decrypts the data files, creates the message and user objects and
@@ -54,24 +56,24 @@ public class Utils {
                 byte[] decryptedMessages = cipher.doFinal(messageCipherArr);
                 byte[] decryptedUsers = cipher.doFinal(userCipherArr);
 
-                String UserString = new String(decryptedUsers, StandardCharsets.UTF_8);
-                String[] users = UserString.split("_");
-                for (String user : users) {
-                    String[] userInfo = user.split("-");
-                    User newUser = new User(userInfo[0], userInfo[1]);
-                    // adding the new user instance to the static user arraylist in DataBase class
-                    DataBase.getUserDB().add(newUser);
+                String userString = new String(decryptedUsers, StandardCharsets.UTF_8);
+                if (userString.length() != 0) {
+                    System.out.println(userString);
+                    String[] users = userString.split("_");
+                    System.out.println(users.length);
+                    for (String user : users) {
+                        String[] userInfo = user.split("-");
+                        new User(userInfo[0], userInfo[1]);
+                    }
                 }
 
                 String messageString = new String(decryptedMessages, StandardCharsets.UTF_8);
-                String[] messages = messageString.split("_");
-                for (String message : messages) {
-                    String[] messageInfo = message.split("-");
-                    Message newMessage = new Message(messageInfo[0], messageInfo[1], DataBase.findUser(messageInfo[3]),
-                            messageInfo[2]);
-                    // adding the new message instance to the static message arraylist in DataBase
-                    // class
-                    DataBase.getMessageDB().add(newMessage);
+                if (messageString.length() != 0) {
+                    String[] messages = messageString.split("_");
+                    for (String message : messages) {
+                        String[] messageInfo = message.split("-");
+                        new Message(messageInfo[0], messageInfo[1], DataBase.findUser(messageInfo[3]), messageInfo[2]);
+                    }
                 }
 
             } catch (IllegalBlockSizeException | BadPaddingException | NoSuchAlgorithmException | NoSuchPaddingException
@@ -96,10 +98,12 @@ public class Utils {
     public static void exportData() {
         File messageFile = new File("messageFile.data");
         File userFile = new File("userFile.data");
+        messageFile.delete();
+        userFile.delete();
 
         try {
-            FileOutputStream messageOStream = new FileOutputStream(messageFile);
-            FileOutputStream userOStream = new FileOutputStream(userFile);
+            FileOutputStream messageOStream = new FileOutputStream(messageFile, false);
+            FileOutputStream userOStream = new FileOutputStream(userFile, false);
 
             try {
                 Cipher cipher = Cipher.getInstance("TripleDES/CBC/PKCS5Padding");
@@ -118,11 +122,13 @@ public class Utils {
                 messageOStream.write(cipherArray);
 
                 stringToWrite = "";
+
                 // encrypting and writing the user data file down
                 for (User user : DataBase.getUserDB()) {
                     stringToWrite += user.getUsername() + "-" + user.getHashedPassword() + "_";
 
                 }
+
                 byte[] userArr = stringToWrite.getBytes(StandardCharsets.UTF_8);
                 cipherArray = cipher.doFinal(userArr);
                 userOStream.write(cipherArray);
@@ -132,15 +138,14 @@ public class Utils {
                 e.printStackTrace();
             }
 
-            messageOStream.flush();
             messageOStream.close();
 
-            userOStream.flush();
             userOStream.close();
 
         } catch (IOException e) {
             e.printStackTrace();
         }
+
     }
 
     /**
