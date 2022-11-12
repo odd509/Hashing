@@ -27,7 +27,8 @@ public class Message {
      * @param messagePassword
      * @throws NotAUniqueFieldException
      */
-    public Message(String messageID, String messageContent, User receivingUser, String messagePassword)
+    public Message(String messageID, String messageContent, User receivingUser, String messagePassword,
+            boolean isExistingMessage)
             throws NotAUniqueFieldException {
         if (messageIDs.contains(messageID)) {
             throw new NotAUniqueFieldException("This message ID exists: " + messageID);
@@ -40,9 +41,13 @@ public class Message {
         try {
             // Hashing the given password string and converting it to base64 to represent it
             // as a string
-            MessageDigest digest = MessageDigest.getInstance("SHA3-256");
-            byte[] hashedBytes = digest.digest(messagePassword.getBytes(StandardCharsets.UTF_8));
-            this.hashedMessagePassword = Base64.getEncoder().encodeToString(hashedBytes);
+            if (!isExistingMessage) {
+                MessageDigest digest = MessageDigest.getInstance("SHA3-256");
+                byte[] hashedBytes = digest.digest(messagePassword.getBytes(StandardCharsets.UTF_8));
+                this.hashedMessagePassword = Base64.getEncoder().encodeToString(hashedBytes);
+            } else {
+                this.hashedMessagePassword = messagePassword;
+            }
             DataBase.getMessageDB().add(this);
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();

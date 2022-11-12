@@ -1,2 +1,4 @@
 /src/*.class
+/src/Backend/*.class
+/src/UI/*.class
 /bin

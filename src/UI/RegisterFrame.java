@@ -156,6 +156,7 @@ public class RegisterFrame extends JFrame implements ActionListener {
         messagePanel.add(Box.createRigidArea(new Dimension(30, 0))); // buffer
 
         messageTextField.setPreferredSize(new Dimension(430, 200));
+        messageTextField.setFont(new Font("Arial", Font.PLAIN, 15));
         messageTextField.setMaximumSize(messageTextField.getPreferredSize());
 
         messagePanel.add(messageTextField);
@@ -239,7 +240,7 @@ public class RegisterFrame extends JFrame implements ActionListener {
             } else {
                 try {
                     new Message(messageCodenameTextField.getText(), messageTextField.getText(), selectedUser,
-                            new String(passwordTextField.getPassword()));
+                            new String(passwordTextField.getPassword()), false);
                     JOptionPane.showMessageDialog(rootPane, "Message sent successfully", "Message",
                             JOptionPane.INFORMATION_MESSAGE);
                 } catch (NotAUniqueFieldException exception) {

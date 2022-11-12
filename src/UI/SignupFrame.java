@@ -177,7 +177,7 @@ public class SignupFrame extends JFrame implements ActionListener {
                 JOptionPane.showMessageDialog(rootPane, "Passwords do not match", "ERROR", JOptionPane.ERROR_MESSAGE);
             } else {
                 try {
-                    new User(usernameTextField.getText(), new String(userPWTextField.getPassword()));
+                    new User(usernameTextField.getText(), new String(userPWTextField.getPassword()), false);
                     JOptionPane.showMessageDialog(rootPane, "Signed up successfully", "Sign up",
                             JOptionPane.INFORMATION_MESSAGE);
                 } catch (NotAUniqueFieldException exception) {

@@ -9,6 +9,7 @@ import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Base64;
 
@@ -19,7 +20,6 @@ import javax.crypto.NoSuchPaddingException;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
-import javax.sound.sampled.SourceDataLine;
 
 public class Utils {
 
@@ -57,22 +57,23 @@ public class Utils {
                 byte[] decryptedUsers = cipher.doFinal(userCipherArr);
 
                 String userString = new String(decryptedUsers, StandardCharsets.UTF_8);
+
                 if (userString.length() != 0) {
-                    System.out.println(userString);
                     String[] users = userString.split("_");
-                    System.out.println(users.length);
                     for (String user : users) {
                         String[] userInfo = user.split("-");
-                        new User(userInfo[0], userInfo[1]);
+                        new User(userInfo[0], userInfo[1], true);
                     }
                 }
 
                 String messageString = new String(decryptedMessages, StandardCharsets.UTF_8);
                 if (messageString.length() != 0) {
                     String[] messages = messageString.split("_");
+
                     for (String message : messages) {
                         String[] messageInfo = message.split("-");
-                        new Message(messageInfo[0], messageInfo[1], DataBase.findUser(messageInfo[3]), messageInfo[2]);
+                        new Message(messageInfo[0], messageInfo[1], DataBase.findUser(messageInfo[3]), messageInfo[2],
+                                true);
                     }
                 }
 
@@ -113,7 +114,9 @@ public class Utils {
 
                 // encrypting and writing the message data file down
                 String stringToWrite = "";
-                for (Message message : DataBase.getMessageDB()) {
+                ArrayList<Message> messageDB = DataBase.getMessageDB();
+
+                for (Message message : messageDB) {
                     stringToWrite += message.getMessageID() + "-" + message.getMessageContent() + "-"
                             + message.getHashedPassword() + "-" + message.getReceivingUser().getUsername() + "_";
                 }
@@ -122,9 +125,9 @@ public class Utils {
                 messageOStream.write(cipherArray);
 
                 stringToWrite = "";
-
+                ArrayList<User> userDB = DataBase.getUserDB();
                 // encrypting and writing the user data file down
-                for (User user : DataBase.getUserDB()) {
+                for (User user : userDB) {
                     stringToWrite += user.getUsername() + "-" + user.getHashedPassword() + "_";
 
                 }
@@ -160,6 +163,7 @@ public class Utils {
             MessageDigest digest = MessageDigest.getInstance("SHA3-256");
             byte[] hashedBytes = digest.digest(password.getBytes(StandardCharsets.UTF_8));
             String hashedPassword = Base64.getEncoder().encodeToString(hashedBytes);
+
             if (DataBase.findMessage(messageID).getHashedPassword().equals(hashedPassword)) {
                 return true;
             }
