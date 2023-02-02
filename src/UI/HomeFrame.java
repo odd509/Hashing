@@ -77,7 +77,7 @@ public class HomeFrame extends JFrame implements ActionListener {
         accessButton.setAlignmentX(CENTER_ALIGNMENT);
         accessButton.addActionListener(this);
 
-        messageButton.setText("Leave Message");
+        messageButton.setText("Leave a Message");
         messageButton.setFont(new Font("Arial Black", Font.PLAIN, 15));
         messageButton.setFocusable(false);
         messageButton.setAlignmentX(CENTER_ALIGNMENT);
@@ -110,7 +110,7 @@ public class HomeFrame extends JFrame implements ActionListener {
 
         JLabel creditsLabel = new JLabel();
 
-        creditsLabel.setText("by Sema and Oğuz");
+        creditsLabel.setText("by Sema and Ouz");
         creditsLabel.setFont(new Font("Arial Black", Font.ITALIC, 10));
         creditsLabel.setForeground(Color.LIGHT_GRAY);
         creditsLabel.setHorizontalAlignment(JLabel.CENTER);

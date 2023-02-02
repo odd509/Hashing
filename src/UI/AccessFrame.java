@@ -4,6 +4,7 @@ import java.awt.*;
 import javax.swing.*;
 
 import Backend.DataBase;
+import Backend.Message;
 import Backend.Utils;
 
 import java.awt.event.ActionEvent;
@@ -173,7 +174,10 @@ public class AccessFrame extends JFrame implements ActionListener {
              * usernameTextField.getText();
              * userPWTextField.getPassword();
              */
-            if (!Utils.checkMessageHash(codenameTextField.getText(), new String(messagePWTextField.getPassword()))) {
+            Message message = DataBase.findMessage(codenameTextField.getText());
+
+            if (!Utils.checkMessageHash(codenameTextField.getText(), new String(messagePWTextField.getPassword()))
+                    || message.getReceivingUser() != DataBase.findUser(usernameTextField.getText())) {
                 JOptionPane.showMessageDialog(rootPane, "Message ID or password incorrect", "ERROR",
                         JOptionPane.ERROR_MESSAGE);
             } else if (!Utils.checkUserHash(usernameTextField.getText(), new String(userPWTextField.getPassword()))) {

@@ -1,18 +1,28 @@
-## Getting Started
+## How to use
 
-Welcome to the VS Code Java world. Here is a guideline to help you get started to write Java code in Visual Studio Code.
+    After cloning the repository, compile it in src with *javac \*.java*
+    Then run the compiled code with *java MessageBox”*
+    The program takes no arguments and is fully dependent on the .data files and for user inputs, the UI. Characters “-” and “_” are not allowed to be used in text fields for design purposes. 
 
-## Folder Structure
+The development java version is java 15.0.2. 
 
-The workspace contains two folders by default, where:
+## Signing Up
 
-- `src`: the folder to maintain sources
-- `lib`: the folder to maintain dependencies
+You can sign up as a user by clicking the “sign up” button at the homepage. Application then 
+creates an instance of User with the provided username and password. Every user must have a 
+unique username. Passwords are hashed with SHA3-256 before being stored in the instance. A 
+“successful sign up” pop-up window can be seen after the valid credentials are given. 
+## Leaving Message
 
-Meanwhile, the compiled output files will be generated in the `bin` folder by default.
+A message can be left to a user at the “Leave a Message” page. Authenticated user needs to 
+be selected from the dropdown menu listing every user in the database, a password must be set 
+alongside with a codename for the message. Then, the desired message can be left. A Message 
+instance is created with the given info and stored inside the message database. Every message 
+must have a unique codename. A “successful message” pop-up window can be seen after valid 
+credentials are given. 
 
-> If you want to customize the folder structure, open `.vscode/settings.json` and update the related settings there.
+## Developed by
 
-## Dependency Management
+[odd509](https://github.com/odd509) and [bitsima](https://github.com/bitsima)
 
-The `JAVA PROJECTS` view allows you to manage your dependencies. More details can be found [here](https://github.com/microsoft/vscode-java-dependency#manage-dependencies).
+![Semodd](/assets/semodd.png)

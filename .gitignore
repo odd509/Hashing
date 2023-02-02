@@ -2,3 +2,5 @@
 /src/Backend/*.class
 /src/UI/*.class
 /bin
+/src/*.data
+/*.data

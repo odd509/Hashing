@@ -1,7 +1,7 @@
 import Backend.Utils;
 import UI.HomeFrame;
 
-public class App {
+public class MessageBox {
     public static void main(String[] args) {
 
         Utils.importData();
