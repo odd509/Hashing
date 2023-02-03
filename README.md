@@ -1,11 +1,11 @@
 ## How to use
 
-    After cloning the repository, compile it in src with *javac \*.java*
-    Then run the compiled code with *java MessageBox”*
-    The program takes no arguments and is fully dependent on the .data files and for user inputs, the UI. 
-    Characters “-” and “_” are not allowed to be used in text fields for design purposes.
-    The message and user data are stored on .data files which are updated/created when the program
-    is terminated.
+After cloning the repository, compile it in src with *javac \*.java*
+Then run the compiled code with *java MessageBox”*
+The program takes no arguments and is fully dependent on the .data files and for user inputs, the UI. 
+Characters “-” and “_” are not allowed to be used in text fields for design purposes.
+The message and user data are stored on .data files which are updated/created when the program
+is terminated.
 
 The development java version is java 15.0.2. 
 
